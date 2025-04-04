@@ -152,7 +152,7 @@ def map_palette(image, labels, centroids, new_palette, mapping):
 
             c = 0
             image[x,y] = image[x,y]*c + (1-c)*color
-    return np.clip(image, 0, 255).astype('uint8')
+    return np.clip(image, 0, 255).giastype('uint8')
 
 def swap(arr, i, j):
     temp = arr[i]
