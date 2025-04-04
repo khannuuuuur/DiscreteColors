@@ -126,7 +126,7 @@ def get_labels(image, centroids):
 
 
 def map_palette(image, labels, centroids, new_palette, mapping):
-    neighbors = np.array([[1,1]])
+    neighbors = np.array([[1,1]]) # specify which dx and dy of the neighbors in one of the quadrants
 
     for x in range(image.shape[0]):
         for y in range(image.shape[1]):
@@ -142,7 +142,7 @@ def map_palette(image, labels, centroids, new_palette, mapping):
                     if 0 <= xn and xn < image.shape[0] and 0 <= yn and yn < image.shape[1]:
                          label_count[mapping.index(labels[xn,yn])] += 1
 
-                    neighbors[i] = [neighbor[1], -neighbor[0]]
+                    neighbors[i] = [neighbor[1], -neighbor[0]] # rotate
             label_count = label_count/np.sum(label_count)
             color = np.sum(new_palette*label_count[:, np.newaxis], axis=0)
             if x == 100 and y == 100:
@@ -160,11 +160,11 @@ def swap(arr, i, j):
     arr[j] = temp
 
 def main():
-    image = open_image("zermatt2.jpg")
+    image = open_image("base_images/brussels.jpg")
     print("Image loaded.")
     NUM_COLORS = 10
 
-    """
+
     colors = image.reshape([image.shape[0]*image.shape[1], 3])
     centroids = init_means(image, NUM_COLORS, size=2)
     centroids, labels = k_means(colors, centroids)
@@ -188,6 +188,7 @@ def main():
 
 
     """
+    """
     aro = np.array([[61, 165, 66],
                     [167, 211, 121],
                     [255,255,255],
@@ -195,6 +196,7 @@ def main():
                     [0,0,0]])
     """
 
+    """
     aro = np.array([[226.25237701, 228.60571271, 229.18341421], # 0, gray 230
                     [174.32817404, 211.0946505,  140.04194009], # 1, light green
                     [125.75347863, 128.12687902, 130.67236658], # 2, gray 130
@@ -207,20 +209,20 @@ def main():
                     [ 63.16066066,  64.18468468,  65.7972973 ]]) # 9, gray 65
     """
 
-    aro_colors = open_image("aro2.jpg")
+    aro_colors = open_image("palette_images/ace2.jpg")
     aro = init_means(aro_colors, NUM_COLORS, size=2)
     aro_colors = aro_colors.reshape([aro_colors.shape[0]*aro_colors.shape[1], 3])
     aro, _ = k_means(aro_colors, aro)
 
     print(aro)
-    """
 
-    #mapping = assign_new_pallete(centroids, aro)
+
+    mapping = assign_new_pallete(centroids, aro)
     # index: which color on the new palette, value: which color in the old palette
     #mapping = [7, 4, 2, 1, 3, 5, 9, 8, 0, 6]
     #          0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-    mapping = [7, 4, 2, 1, 3, 5, 9, 8, 0, 6]
-    swap(mapping, 8, 7)
+    #mapping = [7, 4, 2, 1, 3, 5, 9, 8, 0, 6]
+    #swap(mapping, 8, 7)
 
     print(mapping)
     #mapping = np.arange(NUM_COLORS)
@@ -231,7 +233,7 @@ def main():
 
 
 
-    print("Saved image as", save_image(image, "out.png"))
+    print("Saved image as", save_image(image, "output_images/out.png"))
 
 if __name__ == '__main__':
     main()
